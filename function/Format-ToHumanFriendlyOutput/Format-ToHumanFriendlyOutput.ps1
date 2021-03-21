@@ -1,6 +1,6 @@
 ﻿function Format-ToHumanFriendlyOutput {
     param (
-        [validateset('Path', 'Partition')]
+        [validateset('Path', 'Volume')]
         [string]$Mode = 'Path',
         [string]$Parameter = (Get-Location).Path,
         [validateset('Auto', 'Bytes', 'KB', 'MB', 'GB', 'TB', 'PB')]
@@ -23,7 +23,7 @@
         $Counter = 1
 
         if ($Mode -eq 'Path') {
-            if ($Parameter.Length -eq 1){
+            if ($Parameter.Length -eq 1 -and $Parameter -ne '/'){
                 $Parameter = $Parameter + ':'
             }
 
@@ -79,8 +79,23 @@
                 }
             )    
         }
-        if ($Mode -eq 'Partition') {
+        if ($Mode -eq 'Volume') {
+            $List = Get-Volume
 
+            foreach ($Item in $List) {
+                $VolumeLength = $Item.Size - $Item.SizeRemaining
+
+                $Output += [PSCustomObject][ordered]@{
+                    'Name'           = $Item.DriveLetter
+                    'SizeVisualised' = $null
+                    'Mode'           = $Item.FileSystem
+                    'Length'         = $Item.Size
+                    'SizeInPercent'  = $null
+                    'Readable'       = $true
+                    'IsContainer'    = $true
+                    'DiskLength'    = $VolumeLength
+                }
+            }
         }
     }
 
@@ -112,7 +127,7 @@
             $Output | Format-Table -AutoSize -Property Name, Mode, SizeVisualised, @{Name = 'Length'; Expression = { $_.Length }; Align = 'right' }
         }
         else {
-            Write-Warning 'Results unaccurate. Unable to read all files/Paths. Restart with elevated privileges to receive accurate results.'
+            Write-Warning 'Results unaccurate. Unable to read all items. Restart with elevated privileges to receive accurate results.'
             $Output | Format-Table -AutoSize -Property Name, Mode, SizeVisualised, @{Name = 'Length'; Expression = { $_.Length }; Align = 'right' }, Readable
         }
     }

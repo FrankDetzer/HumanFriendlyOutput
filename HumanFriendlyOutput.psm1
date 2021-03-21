@@ -1,7 +1,7 @@
 ﻿#
-# Module Github Page:   https://github.com/FrankDetzer/psHFO
-# Module Release Page:  https://frankdetzer.com/release-of-pshfo/
-# Module Version:       1.10
+# Module Github Page:   https://github.com/FrankDetzer/psdu
+# Module Release Page:  https://frankdetzer.com/release-of-psdu/
+# Module Version:       2.0.0
 # Module Date:          2020-12-30
 #
 # Author Website:       https://frankdetzer.com
@@ -14,3 +14,5 @@ foreach ($Function in (Get-ChildItem -Path ($PSScriptRoot + '\function') -Recurs
 Set-Alias -Name 'psdu' -Value 'Get-HumanFriendlyFileList'
 Set-Alias -Name 'gfl' -Value 'Get-HumanFriendlyFileList'
 Set-Alias -Name 'ncdu' -Value 'Get-HumanFriendlyFileList'
+
+Set-Alias -Name 'psvu' -Value 'Get-HumanFriendlyVolumeList'

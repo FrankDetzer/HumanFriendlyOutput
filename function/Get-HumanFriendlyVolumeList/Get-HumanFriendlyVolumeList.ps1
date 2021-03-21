@@ -1,29 +1,8 @@
-﻿# function Get-HumanFriendlyVolumeList {
-#     begin {
-#         $InputPath = Get-Volume
-#         $PreparedDataForEngine = @()
-#         $i = 1
+﻿function Get-HumanFriendlyVolumeList {
+    param (
+        [validateset('Auto', 'Bytes', 'KB', 'MB', 'GB', 'TB', 'PB')]
+        [string]$SizeUnit = 'Auto'
+    )
 
-#     }
-
-#     process {
-#         foreach ($Item in $InputPath) {
-#             $i++
-#             Write-Progress -Activity 'Search in Progress'  -Status "$i% Complete:" -PercentComplete $i;
-
-#             $PreparedDataForEngine += [PSCustomObject][ordered]@{
-#                 'Name'          = $Item.FriendlyName
-#                 'Length'        = $Item.Length
-#                 'SizeRemaining' = $Item.SizeRemaining
-#                 'IsContainer'   = $null
-#                 'FriendlyName1' = $Item.DriveLetter
-#                 'FriendlyName2' = $Item.FriendlyName
-#                 'FriendlyName3' = $null
-#             }
-#         }
-#     }
-
-#     end {
-#         FormatTo-HumanFriendlyOutput -InputObjectCollection $PreparedDataForEngine -FriendlyName1 'DriveLetter' -FriendlyName2 'FriendlyName'
-#     }
-# }
+    Format-ToHumanFriendlyOutput -Mode Volume -SizeUnit $SizeUnit
+}
